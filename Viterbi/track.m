@@ -154,13 +154,17 @@ end
 % run viterbi, retrieve sequence
 display('Building Viterbi Algorithm...');
 display('Calculating Optimal Sequence...');
-seq = zeros(cl, N);
-for c = 1:cl
-	seq(c,:) = viterbi(squeeze(transition_score_cell_array(c,:,:,:)), squeeze(emissions_cell_array(c,:,:)));
-end
+try
+    load('../tmp/hmm_data.mat');
+catch exception
+	seq = zeros(cl, N);
+	for c = 1:cl
+		seq(c,:) = viterbi(squeeze(transition_score_cell_array(c,:,:,:)), squeeze(emissions_cell_array(c,:,:)));
+	end
 
-display('Saving HMM data to file...');
-save('../tmp/hmm_data.mat', 'seq');
+	display('Saving HMM data to file...');
+	save('../tmp/hmm_data.mat', 'seq');
+end
 
 
 % FINALIZE SEQUENCE
@@ -194,15 +198,21 @@ for c = 1:cl
 	outputVideo = VideoWriter(fullfile('../output/',['track_out_' num2str(c) '.avi']));
 	outputVideo.FrameRate = 25;%video.FrameRate;
 	open(outputVideo);
+	fid = fopen(['../output/dets_' num2str(c) '.txt'], 'w');
 	for i=1:N
 		display(sprintf('Annotating frame: %d/%d', i, N));
 		im = imread([vid_feed_path '/' d(i).name]);
-		annotate_image(squeeze(detection_array(c,i,:))', im, i);
+		
+		det = squeeze(detection_array(c,i,:))';
+		
+		annotate_image(det, im, i);
 		F = getframe(h);
 		
 		writeVideo(outputVideo,F);
+		fprintf(fid, '%s %.2f %3d %3d %3d %3d\n', [vid_feed_path '/' d(i).name], det(5), det(1), det(2), det(3), det(4));
 	end
 	close(outputVideo);
+	fclose(fid);
 end
 
 display('Exporting Complete. Tracked video can be found at: ../output/track_out.avi');
