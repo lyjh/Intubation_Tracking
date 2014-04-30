@@ -2,7 +2,7 @@ function evalDet(class)
 	% evaluate the precision-recall of the detection result
 
 	[~, X1, Y1, X2, Y2, ~] = textread([class '_groundTruth.txt'], '%s %d %d %d %d %d');
-	[~, ~, x1, y1, x2, y2] = textread([class '_det.txt'], '%s %d %d %d %d %d');
+	[~, ~, x1, y1, x2, y2] = textread([class '_det.txt'], '%s %f %d %d %d %d');
 
 	N = size(X1, 1);
 
