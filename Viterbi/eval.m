@@ -13,26 +13,31 @@ function evalDet(class)
 	for i = 1:N
 		gt = [X1(i), Y1(i), X2(i), Y2(i)];
 		det = [x1(i), y1(i), x2(i), y2(i)];
-		if gt ~= [0 0 0 0]
-			npos = npos+1;
-		else
+		if gt == [0 0 0 0] && det == [0 0 0 0] % true negative
+			continue;
+		elseif gt == [0 0 0 0] && det ~= [0 0 0 0] % false positive
+			fp(i) = 1;
 			continue;
 		end
-		a1 =  (gt(3)-gt(1)) * (gt(4)-gt(2));
-		a2 =  (det(3)-det(1)) * (det(4)-det(2));
-		xx1 = max(gt(1), det(:,1));
-		yy1 = max(gt(2), det(:,2));
-		xx2 = min(gt(3), det(:,3));
-		yy2 = min(gt(4), det(:,4));
-		w = max(0, xx2-xx1+1);
-		h = max(0, yy2-yy1+1);
-		inter = w * h;
-		o = inter / (a1+a2-inter);
-		if o >= 0.5
-			tp(i) = 1;
-		else
-			fp(i) = 1;
+		npos = npos+1;
+		if det ~= [0 0 0 0]
+			a1 =  (gt(3)-gt(1)) * (gt(4)-gt(2));
+			a2 =  (det(3)-det(1)) * (det(4)-det(2));
+			xx1 = max(gt(1), det(:,1));
+			yy1 = max(gt(2), det(:,2));
+			xx2 = min(gt(3), det(:,3));
+			yy2 = min(gt(4), det(:,4));
+			w = max(0, xx2-xx1+1);
+			h = max(0, yy2-yy1+1);
+			inter = w * h;
+			o = inter / (a1+a2-inter);
+			if o >= 0.5
+				tp(i) = 1; % true positive
+			else
+				fp(i) = 1; % false positive
+			end
 		end
+		% false negative, don't care here
 	end
 	tp = cumsum(tp);
 	fp = cumsum(fp);
