@@ -1,4 +1,4 @@
-function [ detection_array ] = track(vid_feed_path, cl, k)
+function track(vid_feed_path, cl, k)
 % TRACK
 %   AUTH: Jaleel Salhi, jsalhi@umich.edu
 %         John H. Kuhn, hkuhn@umich.edu

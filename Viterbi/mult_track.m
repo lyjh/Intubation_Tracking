@@ -1,4 +1,4 @@
-function [ detection_array, seq, tags ] = mult_track(vid_feed_path, c, k)
+function mult_track(vid_feed_path, c, k)
 % MULT TRACK
 %   AUTH: Jaleel Salhi, jsalhi@umich.edu
 %         John H. Kuhn, hkuhn@umich.edu
