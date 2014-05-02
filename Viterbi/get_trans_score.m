@@ -37,5 +37,5 @@ function area = getArea(rect1, rect2)
 	area1 = (rect1(3)-rect1(1)) * (rect1(4)-rect1(2));
 	area2 = (rect2(:,3)-rect2(:,1)) .* (rect2(:,4)-rect2(:,2));
 	diffa = area2 - area1;
-	area = normpdf(diffa, 0, 0.3*area1);
+	area = normpdf(diffa/area1, 0, 0.3);
 end
