@@ -111,14 +111,12 @@ catch exception
     transition_score_cell_array = zeros(cl,N-1, k+1, k+1);
 
     % compute transition scores for all bbox pairs
-	for c = 1:cl
-		for i=1:N-1
-			transition_score_matrix = zeros(k+1,k+1); % each row designates cur frame
-													  % each col designates next frame
-			for ii=1:k+1
-				trainsition_score_matrix(ii, :) = get_trans_score(bbox_cell_array(c,i,ii,:), bbox_cell_array(c,i+1,:,:))';
+	for c = 1:cl % for each class
+		for i=1:N-1 % for each frame
+			for ii=1:k+1 % for each bbox
+				transition_score_cell_array(c,i,ii,:) = ...
+					get_trans_score(bbox_cell_array(c,i,ii,:), bbox_cell_array(c,i+1,:,:))';
 			end
-			transition_score_cell_array(c,i,:,:) = transition_score_matrix;
 		end
 	end
     display(sprintf('Saving transition scores to file...'));
@@ -144,9 +142,8 @@ emissions_cell_array = zeros(cl,N,k+1);
 
 for c = 1:cl
 	for i=1:N
-		current_emissions_vector = bbox_cell_array(c,i,:,5); % (k+1)x1 vector
-		current_emissions_vector(k+1) = 0;
-		emissions_cell_array(c,i,:) = current_emissions_vector;
+		emissions_cell_array(c,i,:) = bbox_cell_array(c,i,:,5);
+		emissions_cell_array(c,i,k+1) = 0;
 	end
 end
 
@@ -178,14 +175,14 @@ display(sprintf('-------------------------------------\n'));
 
 
 % STEP 1: retrieve bounding box locations from tags in seq
-display('Retrieving bounding boxes from sequence tags...');
-detection_array = zeros(cl,N,5);
+% display('Retrieving bounding boxes from sequence tags...');
+% detection_array = zeros(cl,N,5);
 
-for c = 1:cl
-	for i=1:N
-		detection_array(c,i,:) = bbox_cell_array(c,i,seq(c,i),:);
-	end
-end
+% for c = 1:cl
+	% for i=1:N
+		% detection_array(c,i,:) = bbox_cell_array(c,i,seq(c,i),:);
+	% end
+% end
 
 
 % STEP 2: overlay bounding boxes onto each frame
@@ -203,7 +200,7 @@ for c = 1:cl
 		display(sprintf('Annotating frame: %d/%d', i, N));
 		im = imread([vid_feed_path '/' d(i).name]);
 		
-		det = squeeze(detection_array(c,i,:))';
+		det = squeeze(bbox_cell_array(c,i,seq(c,i)))';
 		
 		annotate_image(det, im, i);
 		F = getframe(h);

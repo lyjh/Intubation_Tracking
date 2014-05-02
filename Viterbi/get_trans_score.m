@@ -5,8 +5,9 @@
 function score = get_trans_score(rect1,rect2)
 	IoU = getIoU(rect1, rect2);
 	dist = getDist(rect1, rect2);
+	area = getArea(rect1, rect2);
 	
-	score = IoU + dist;
+	score = IoU + dist + area;
 end
 
 function IoU =  getIoU(rect1,rect2)
@@ -32,3 +33,9 @@ function dist = getDist(rect1, rect2)
 	dist = normpdf(d, 0, 10);
 end
 
+function area = getArea(rect1, rect2)
+	area1 = (rect1(3)-rect1(1)) * (rect1(4)-rect1(2));
+	area2 = (rect2(:,3)-rect2(:,1)) .* (rect2(:,4)-rect2(:,2));
+	diffa = area2 - area1;
+	area = normpdf(diffa, 0, 0.3*area1);
+end

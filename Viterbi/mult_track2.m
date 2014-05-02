@@ -148,18 +148,18 @@ display(sprintf('-------------------------------------\n'));
 
 
 % STEP 1: retrieve bounding box locations from tags in seq
-display('Retrieving bounding boxes from sequence tags...');
-detection_array = zeros(N,5);
+% display('Retrieving bounding boxes from sequence tags...');
+% detection_array = zeros(N,5);
 
-tags = seq;
+% tags = seq;
 
-for i=1:N
-    bbox = bbox_array(i,seq(i),:);
-    detection_array(i,:) = bbox;
-    if squeeze(bbox(1:4)) == zeros(4,1)
-        seq(i) = 0;
-    end
-end
+% for i=1:N
+    % bbox = bbox_array(i,seq(i),:);
+    % detection_array(i,:) = bbox;
+    % if squeeze(bbox(1:4)) == zeros(4,1)
+        % seq(i) = 0;
+    % end
+% end
 
 
 % STEP 2: overlay bounding boxes onto each frame
@@ -172,7 +172,8 @@ open(outputVideo);
 for i=1:N
     display(sprintf('Annotating frame: %d/%d', i, N));
 	im = imread([vid_feed_path '/' d(i).name]);
-    frame = annotate_image2(detection_array(i,:), im, i, seq(i), k);
+	det = squeeze(bbox_array(i,seq(i),:))';
+    frame = annotate_image2(det, im, i, seq(i), k);
 
 	writeVideo(outputVideo,frame);
 end
