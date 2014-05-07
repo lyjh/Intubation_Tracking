@@ -201,7 +201,7 @@ for c = 1:cl
 		display(sprintf('Annotating frame: %d/%d', i, N));
 		im = imread([vid_feed_path '/' d(i).name]);
 		
-		det = squeeze(bbox_cell_array(c,i,seq(c,i)))';
+		det = squeeze(bbox_cell_array(c,i,seq(c,i),:))';
 		
 		annotate_image(det, im, i);
 		F = getframe(h);
