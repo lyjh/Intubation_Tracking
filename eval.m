@@ -8,7 +8,7 @@ function evalDet(class)
 
 	npos = 0; % number of positive samples
 	tp = zeros(N,1); % true positives
-	tp = zeros(N,1); % false positives
+	fp = zeros(N,1); % false positives
 
 	for j = 1:N
 		i = si(j);
