@@ -1,4 +1,4 @@
-function track(vid_feed_path, cl, k)
+function track(vid_feed_path, cl, k, gpu_id)
 % TRACK
 %   AUTH: Jaleel Salhi, jsalhi@umich.edu
 %         John H. Kuhn, hkuhn@umich.edu
@@ -28,7 +28,7 @@ input_size = 100;
 model_def_file = './caffe/vocnet_deploy.prototxt';
 model_file = '/mnt/neocortex/scratch/tsechiw/caffe/build/caffe_intunet_train_iter_140000';
 % set the ID of GPU being used, e.g., 1
-caffe('set_device', 1);
+caffe('set_device', gpu_id);
 caffe('init', model_def_file, model_file);
 
 if exist('use_gpu', 'var') && use_gpu
