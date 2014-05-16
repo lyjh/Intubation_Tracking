@@ -5,7 +5,7 @@
 data_path = input(sprintf('Specify path to the images: \n'), 's');
 num_class = 4;
 num_keep = 6;
-GPU_ID = 1;
+GPU_ID = 3;
 
 track2(data_path, num_class, num_keep, GPU_ID);
 [det, seq, tag] = mult_track(data_path, num_class, num_keep);
