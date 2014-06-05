@@ -48,7 +48,7 @@ for i=1:N
 		goods = [goods; newbbox(ind,:)];
 	end
 	for j = 1:samples
-		fprintf(fid, '%s %d %d %d %d %d\n', [class '/' name{i}], goods(j,2), goods(j,1), goods(j,4), goods(j,3), label);
+		fprintf(fid, '%s %d %d %d %d %d\n', [class '/' name{i}], goods(j,1), goods(j,2), goods(j,3), goods(j,4), label);
 	end
 	fprintf('Process %d/%d\n', i, N);
 end
